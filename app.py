@@ -33,6 +33,103 @@ def category_itemsJSON(category_id):
     category_items = session.query(Items).filter_by(category_id = category_id).all()
     return jsonify(items = [r.serialize for r in category_items])
 
+# show all categories
+@app.route('/')
+@app.route('/categories')
+def Showcategories():
+    categories = session.query(Category).order_by(asc(Category.name)).all()
+    return render_template('homepage.html', categories = categories)
+
+@app.route('/categories/new', methods = ['GET', 'POST'])
+def Newcategory():
+    if request.method == 'POST':
+        newcategory = Category(name = request.form('name'))
+        session.add(newcategory)
+        session.commit()
+        flash('Category Successfully added %s' %newcategory.name)
+        return redirect (url_for('Showcategories'))
+    else:
+        return render_template('newcategory.html')
+
+@app.route('/categories/<int:category_id>/edit', methods = ['GET' ,'POST'])
+def Editcategory(category_id):
+    if request.method == 'POST':
+        editedcategory = session.query(Category).filter_by(id = category_id).one()
+        if request.form ['name']:
+            editedcategory.name = request.form['name']
+            flash('Category Successfully Edited %s' %editedcategory.name)
+            return redirect (url_for('Showcategories'))
+        else:
+            return render_template('editedcategory.hrml', category = editedcategory)
+
+@app.route('/categories/<int:categories_id>/delete' , methods = ['GET','POST'])
+def Deltecategory(category_id):
+    if request.method == 'POST':
+        deltecategory = session.query(Category).filter_by(id = category_id).one()
+        session.delete(deltecategory)
+        session.commit()
+        flash ('Category Successfully deleted %s' %deltecategory.name)
+        return redirect (url_for('Showcategories'))
+    else:
+        return render_template('deltecategory.html', category = deltecategory)
+
+#show all items
+@app.route('/categories/<int:category_id>/items' , methods = ['GET','POST'])
+def Showitems(category_id):
+    category = session.query(Category).filter_by(id = category_id).one()
+    items = session.query(Items).filter_by(category_id = category_id).all()
+    session.add(items)
+    session.commit()
+    return render_template ('items.html', category = category , items = items)
+
+@app.route('/categories/<int:category_id>/items/new', methods = ['GET','POST'])
+def newitems(category_id):
+    if request.method == 'POST':
+        newitem = Item(name = request.form['name'], description = request.form['description'], category_id = category_id)
+        session.add(newitem)
+        session.commit()
+        flash ('Items Successfully added %s' % newitem.name)
+        return redirect (url_for('Showitems', category_id = category_id))
+    else:
+        return render_template('newitem.html',category_id = category_id)
+
+@app.route('/categories/<int:category_id>/<int:items_id>/edit' , methods = ['GET','POST'])
+def edititem(category_id, items_id):
+    if request.method == 'POST':
+        editeditem = session.query(Items).filter_by(id = items_id, category_id = category_id).one()
+    if request.form ['name']:
+        editeditem.name = request.form['name']
+    if request.form ['description']:
+        editeditem.description = request.form['description']
+        session.add(editeditem)
+        session.commit()
+        flash ('Item Successfully edited %s' % editeditem.name)
+        return redirect (url_for('Showitems', category_id = category_id))
+    else:
+        return render_template ('edititem.html',editeditem = editeditem)
+
+@app.route('/categories/<int:category_id>/<int:items_id>/delete' , methods = ['GET','POST'])
+def deleteitem(category_id,items_id):
+    if request.method == 'POST':
+        deleteitem = session.query(Items).filter_by(id = items_id)
+        session.delete(deleteitem)
+        session.commit()
+        flash ('Item Successfully deleted %s' %delteitem.name)
+        return redirect (url_for ('Showitems', category_id = category_id))
+    else:
+        return render_template ('deleteitem.html' , deleteitem = deleteitem)
+
+
+
+
+
+
+
+
+
+
+
+
 if __name__ == '__main__':
   app.debug = True
   app.run(host = '0.0.0.0', port = 5000)
