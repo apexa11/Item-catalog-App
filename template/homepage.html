@@ -1,0 +1,13 @@
+{% block content %}
+    <div class = "pagebox">
+        <h1>
+            Hello! Please Select a Category to View the Items in Stock!
+        </h1>
+
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+
+            <ul>
+            {% for message in messages %}
+                <li> <strong> {{message}} </strong> </li>
+            {% endfor %}
