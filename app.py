@@ -60,7 +60,7 @@ def Editcategory(category_id):
             flash('Category Successfully Edited %s' %editedcategory.name)
             return redirect (url_for('Showcategories'))
         else:
-            return render_template('editedcategory.hrml', category = editedcategory)
+            return render_template('editedcategory.html', category = editedcategory)
 
 @app.route('/categories/<int:categories_id>/delete' , methods = ['GET','POST'])
 def Deltecategory(category_id):
