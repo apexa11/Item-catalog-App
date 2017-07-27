@@ -18,17 +18,17 @@
         <br> {{item.description}}
         <br>
 
-        <a href="{{url_for('newitem' , category_id = category.id)}}">
+        <a href="{{url_for('newitems' , category_id = category.id)}}">
             Add newItem </a>
         <br>
 
         <a href="{{url_for('edititem', category_id = category.id ,
-            item_id = item.id)}}">
+        items_id = items.id)}}">
             Edit Item </a>
         <br>
 
-        <a href="{{url_for('deleteItem', category_id = category.id,
-            item_id = item.id)}}"> Delete Item </a>
+        <a href="{{url_for('deleteitem', category_id = category.id,
+            items_id = items.id)}}"> Delete Item </a>
         <br> {% endfor %}
 
         <a href="{{url_for('Showcategory')}}">Back to category </a>
