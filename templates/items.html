@@ -13,25 +13,29 @@
     {% endif %} {% endwith %}
 
     <div>
+    <a href="{{url_for('newitems' , category_id = category.id)}}">
+            Add newItem </a>
+        <br>
+        <br>
+
 
         {% for item in items %} {{item.name}}
         <br> {{item.description}}
         <br>
-
-        <a href="{{url_for('newitems' , category_id = category.id)}}">
-            Add newItem </a>
         <br>
+        
+        
 
         <a href="{{url_for('edititem', category_id = category.id ,
-        items_id = items.id)}}">
-            Edit Item </a>
-        <br>
+        items_id = item.id)}}">
+            Edit  </a>
+        
 
         <a href="{{url_for('deleteitem', category_id = category.id,
-            items_id = items.id)}}"> Delete Item </a>
+            items_id = item.id)}}"> Delete </a>
         <br> {% endfor %}
 
-        <a href="{{url_for('Showcategory')}}">Back to category </a>
+        <a href="{{url_for('Showcategories')}}">Back to category </a>
     </div>
     {% endblock %}
 </body>

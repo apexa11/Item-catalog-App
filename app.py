@@ -43,7 +43,7 @@ def Showcategories():
 @app.route('/categories/new', methods = ['GET', 'POST'])
 def Newcategory():
     if request.method == 'POST':
-        newcategory = Category(name = request.form('name'))
+        newcategory = Category(name = request.form['name'])
         session.add(newcategory)
         session.commit()
         flash('Category Successfully added %s' %newcategory.name)
@@ -54,12 +54,12 @@ def Newcategory():
 @app.route('/categories/<int:category_id>/edit', methods = ['GET' ,'POST'])
 def Editcategory(category_id):
     if request.method == 'POST':
+    	editedcategory = session.query(Category).filter_by(id = category_id).one()
 
         if request.form ['name']:
             editedcategory.name = request.form['name']
-            name = Category(name = name)
-            session.add(name)
-            session.commit()
+            
+            
             flash('Category Successfully Edited %s' %editedcategory.name)
             return redirect (url_for('Showcategories'))
         else:
@@ -86,7 +86,7 @@ def Showitems(category_id):
 @app.route('/categories/<int:category_id>/items/new', methods = ['GET','POST'])
 def newitems(category_id):
     if request.method == 'POST':
-        newitem = Item(name = request.form['name'], description = request.form['description'], category_id = category_id)
+        newitem = Items(name = request.form['name'], description = request.form['description'], category_id = category_id)
         session.add(newitem)
         session.commit()
         flash ('Items Successfully added %s' % newitem.name)
@@ -97,7 +97,9 @@ def newitems(category_id):
 @app.route('/categories/<int:category_id>/<int:items_id>/edit' , methods = ['GET','POST'])
 def edititem(category_id, items_id):
     if request.method == 'POST':
-        editeditem = session.query(Items).filter_by(id = items_id, category_id = category_id).one()
+        category = session.query(Category).filter_by(id = category_id).one()
+        editeditem = session.query(Items).filter_by(id = items_id).one()
+        
     if request.form ['name']:
         editeditem.name = request.form['name']
     if request.form ['description']:
@@ -107,18 +109,19 @@ def edititem(category_id, items_id):
         flash ('Item Successfully edited %s' % editeditem.name)
         return redirect (url_for('Showitems', category_id = category_id))
     else:
-        return render_template ('edititem.html',editeditem = editeditem)
+        return render_template ('edititem.html',item = editeditem , category_id = category_id , items_id = items_id)
 
 @app.route('/categories/<int:category_id>/<int:items_id>/delete' , methods = ['GET','POST'])
 def deleteitem(category_id,items_id):
     if request.method == 'POST':
-        deleteitem = session.query(Items).filter_by(id = items_id)
-        session.delete(deleteitem)
+    	category = session.query(Category).filter_by(id = category_id).one()
+        deleteditem = session.query(Items).filter_by(id = items_id).one()
+        session.delete(deleteditem)
         session.commit()
-        flash ('Item Successfully deleted %s' %delteitem.name)
+        flash ('Item Successfully deleted %s' %delteditem.name)
         return redirect (url_for ('Showitems', category_id = category_id))
     else:
-        return render_template ('deleteitem.html' , deleteitem = deleteitem)
+        return render_template ('deleteitem.html' , category_id = category_id , items_id = items_id , item = deleteditem )
 
 
 
@@ -132,6 +135,7 @@ def deleteitem(category_id,items_id):
 
 
 if __name__ == '__main__':
+  app.secret_key = 'super_secret_key'
   app.debug = True
   app.run(host = '0.0.0.0', port = 8000)
 
