@@ -3,7 +3,7 @@
 
 <body>
     <h1> Edit Item </h1>
-    <form action="{{url_for('edititem' , category_id = )}}" method="POST">
+    <form action="#" method="POST">
         <label> Name : </label>
         <input type="text" maxlength="30" name="name" value="{{item.name}}">
         <br>
@@ -14,7 +14,7 @@
         <br>
 
         <input type="submit" value="Save">
-        <a href="{{url_for('Showitems')">Cancle </a>
+        <a href="{{url_for('Showitems' , category_id = category_id)}}">Cancel </a>
 
 </body>
 

@@ -96,29 +96,29 @@ def newitems(category_id):
 
 @app.route('/categories/<int:category_id>/<int:items_id>/edit' , methods = ['GET','POST'])
 def edititem(category_id, items_id):
+    category = session.query(Category).filter_by(id = category_id).one()
+    editeditem = session.query(Items).filter_by(id = items_id).one()
     if request.method == 'POST':
-        category = session.query(Category).filter_by(id = category_id).one()
-        editeditem = session.query(Items).filter_by(id = items_id).one()
-        
-    if request.form ['name']:
-        editeditem.name = request.form['name']
-    if request.form ['description']:
-        editeditem.description = request.form['description']
-        session.add(editeditem)
-        session.commit()
-        flash ('Item Successfully edited %s' % editeditem.name)
-        return redirect (url_for('Showitems', category_id = category_id))
+        if request.form ['name']:
+            editeditem.name = request.form['name']
+        if request.form ['description']:
+            editeditem.description = request.form['description']
+            session.add(editeditem)
+            session.commit()
+            flash ('Item Successfully edited %s' % editeditem.name)
+            return redirect (url_for('Showitems', category_id = category_id))
     else:
         return render_template ('edititem.html',item = editeditem , category_id = category_id , items_id = items_id)
 
 @app.route('/categories/<int:category_id>/<int:items_id>/delete' , methods = ['GET','POST'])
 def deleteitem(category_id,items_id):
+    category = session.query(Category).filter_by(id = category_id).one()
+    deleteditem = session.query(Items).filter_by(id = items_id).one()
     if request.method == 'POST':
-    	category = session.query(Category).filter_by(id = category_id).one()
-        deleteditem = session.query(Items).filter_by(id = items_id).one()
+    	
         session.delete(deleteditem)
         session.commit()
-        flash ('Item Successfully deleted %s' %delteditem.name)
+        flash ('Item Successfully deleted %s' %deleteditem.name)
         return redirect (url_for ('Showitems', category_id = category_id))
     else:
         return render_template ('deleteitem.html' , category_id = category_id , items_id = items_id , item = deleteditem )
