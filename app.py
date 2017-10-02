@@ -40,6 +40,7 @@ def Showcategories():
     categories = session.query(Category).order_by(asc(Category.name)).all()
     return render_template('homepage.html', categories = categories)
 
+#show all catagories
 @app.route('/categories/new', methods = ['GET', 'POST'])
 def Newcategory():
     if request.method == 'POST':
@@ -51,6 +52,7 @@ def Newcategory():
     else:
         return render_template('newcategory.html')
 
+#Edit Catagories
 @app.route('/categories/<int:category_id>/edit', methods = ['GET' ,'POST'])
 def Editcategory(category_id):
     if request.method == 'POST':
@@ -65,16 +67,19 @@ def Editcategory(category_id):
         else:
             return render_template('editedcategory.html', category = editedcategory)
 
-@app.route('/categories/<int:categories_id>/delete' , methods = ['GET','POST'])
-def Deltecategory(category_id):
+#delete catagories
+@app.route('/categories/<int:category_id>/delete' , methods = ['GET','POST'])
+def Deletecategory(category_id):
+    DeleteToCategory = session.query(Category).filter_by(id = category_id).one()
     if request.method == 'POST':
-        deltecategory = session.query(Category).filter_by(id = category_id).one()
-        session.delete(deltecategory)
+        
+        session.delete(DeleteToCategory)
+        
+        flash ('Category Successfully deleted %s' %DeleteToCategory.name)
         session.commit()
-        flash ('Category Successfully deleted %s' %deltecategory.name)
-        return redirect (url_for('Showcategories'))
+        return redirect (url_for('Showcategories', category_id = category_id))
     else:
-        return render_template('deltecategory.html', category = deltecategory)
+        return render_template('deletecategory.html', category = DeleteToCategory)
 
 #show all items
 @app.route('/categories/<int:category_id>/items' , methods = ['GET','POST'])
