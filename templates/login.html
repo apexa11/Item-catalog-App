@@ -14,7 +14,7 @@
 </head>
 
 <div style="background-color: black; width: 60%; min-width: 275px; margin: 0 auto; padding-top: 2rem; min-height: 275px; background: linear-gradient(to right, #007991, #78ffd6); box-shadow: 5px 5px 5px #4d4d4d;">
-<h1 class="loginpage" style="color: white; font-family: 'Ubuntu', sans-serif; margin: 0.5rem;"> Sign In to My Restaurant </h1>
+<h1 class="loginpage" style="color: white; font-family: 'Ubuntu', sans-serif; margin: 0.5rem;"> Sign In to Item catalog </h1>
 <br>
 
 <body style="margin: 0 auto; width: 75%; text-align: center; align-items: center; align-content: center; margin-top: 10%; background: linear-gradient(to right, #1a2980, #26d0ce);">
@@ -25,7 +25,7 @@
           <div id="signInButton">
           <span class="g-signin Button Gbtn"
             data-scope="openid email profile"
-            data-clientid="1002371267276-adq0uqel7m1d0bk80pphi092gfa9qbaa.apps.googleusercontent.com"
+            data-clientid="308460466863-uf8sisdp4q6histpcorp121270toalha.apps.googleusercontent.com"
             data-redirecturi="postmessage"
             data-accesstype="offline"
             data-cookiepolicy="single_host_origin"
@@ -55,7 +55,7 @@ function signInCallback(authResult) {
         if (result) {
           $('#result').html('Login Successful!</br>'+ result + '</br>Redirecting...')
          setTimeout(function() {
-          window.location.href = "/restaurant";
+          window.location.href = "/categories";
          }, 1000);
 
       } else if (authResult['error']) {
@@ -68,3 +68,6 @@ function signInCallback(authResult) {
   }); } }
 
 </script>
+</body>
+</div>
+</html>
