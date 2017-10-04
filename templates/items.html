@@ -3,7 +3,16 @@
 <body>
 
     {% block content %}
-    <h1> {{ category.name}} </h1> {% with messages = get_flashed_messages() %} {% if messages %}
+    <h1> {{ category.name}} 
+        <div class=" creator">
+            <img src="{{creator.picture}}">
+            <figcaption>{{creator.name}}</figcaption>
+        </h1>
+
+        </div>
+
+
+    {% with messages = get_flashed_messages() %} {% if messages %}
 
     <ul>
         {% for message in messages %}
