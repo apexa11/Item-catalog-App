@@ -3,7 +3,7 @@ app = Flask(__name__)
 
 from sqlalchemy import create_engine, asc
 from sqlalchemy.orm import sessionmaker
-from Database_setup import Base, Category,Items
+from Database_setup import Base, Category,Items, User
 
 #New imports for google sign-in
 from flask import session as login_session
@@ -21,7 +21,7 @@ CLIENT_ID = json.loads(
     open('client_secrets.json', 'r').read())['web']['client_id']
 
 #connect to database and create database session
-engine = create_engine('sqlite:///catalog.db')
+engine = create_engine('sqlite:///ItemCatalog.db')
 Base.metadata.bind = engine
 
 DBSession = sessionmaker(bind=engine)
@@ -120,9 +120,28 @@ def gconnect():
     print "done!"
     return output
 
-    # DISCONNECT - Revoke a current user's token and reset their login_session
+# creating new user
+def createUser(login_session):
+  newUser = User(name = login_session['username'],email = login_session['email'],
+    picture = login_session['picture'])
+  session.add(newUser)
+  session.commit()
+  user = session.query(User).filter_by(email = login_session['email']).one()
+  return user.id
 
+def getUserId(email):
+  try:
+    user = session.query(User).filter_by(email = login_session['email']).one()
+    return user.id
+  except:
+    return None
 
+# get user info
+def getUserInfo(user_id):
+  user = session.query(User).filter_by(id = user_id).one()
+  return user
+
+# DISCONNECT - Revoke a current user's token and reset their login_session
 @app.route('/gdisconnect')
 def gdisconnect():
     access_token = login_session.get('access_token')
@@ -175,14 +194,17 @@ def category_itemsJSON(category_id):
 @app.route('/')
 @app.route('/categories')
 def Showcategories():
-    categories = session.query(Category).order_by(asc(Category.name)).all()
+    categories = session.query(Category).order_by(Category.name).all()
     return render_template('homepage.html', categories = categories)
 
 #show all catagories
 @app.route('/categories/new', methods = ['GET', 'POST'])
 def Newcategory():
+    if 'username'not in login_session:
+        return redirect('/login') 
     if request.method == 'POST':
-        newcategory = Category(name = request.form['name'])
+        newcategory = Category(name = request.form['name'], user_id = login_session['user_id'])
+
         session.add(newcategory)
         session.commit()
         flash('Category Successfully added %s' %newcategory.name)
@@ -193,6 +215,8 @@ def Newcategory():
 #Edit Catagories
 @app.route('/categories/<int:category_id>/edit', methods = ['GET' ,'POST'])
 def Editcategory(category_id):
+    if 'username'not in login_session:
+        return redirect('/login') 
     if request.method == 'POST':
     	editedcategory = session.query(Category).filter_by(id = category_id).one()
 
@@ -208,6 +232,8 @@ def Editcategory(category_id):
 #delete catagories
 @app.route('/categories/<int:category_id>/delete' , methods = ['GET','POST'])
 def Deletecategory(category_id):
+    if 'username'not in login_session:
+        return redirect('/login') 
     DeleteToCategory = session.query(Category).filter_by(id = category_id).one()
     if request.method == 'POST':
         
@@ -228,8 +254,10 @@ def Showitems(category_id):
 
 @app.route('/categories/<int:category_id>/items/new', methods = ['GET','POST'])
 def newitems(category_id):
+    if 'username'not in login_session:
+        return redirect('/login') 
     if request.method == 'POST':
-        newitem = Items(name = request.form['name'], description = request.form['description'], category_id = category_id)
+        newitem = Items(name = request.form['name'], description = request.form['description'],img_url = request.form['img_url'] ,user_id = restaurant.user_id,category_id = category_id)
         session.add(newitem)
         session.commit()
         flash ('Items Successfully added %s' % newitem.name)
@@ -239,6 +267,8 @@ def newitems(category_id):
 
 @app.route('/categories/<int:category_id>/<int:items_id>/edit' , methods = ['GET','POST'])
 def edititem(category_id, items_id):
+    if 'username'not in login_session:
+        return redirect('/login') 
     category = session.query(Category).filter_by(id = category_id).one()
     editeditem = session.query(Items).filter_by(id = items_id).one()
     if request.method == 'POST':
@@ -246,6 +276,8 @@ def edititem(category_id, items_id):
             editeditem.name = request.form['name']
         if request.form ['description']:
             editeditem.description = request.form['description']
+        if request.form ['img_url']:
+            editeditem.img_url = request.form['img_url']
             session.add(editeditem)
             session.commit()
             flash ('Item Successfully edited %s' % editeditem.name)
@@ -255,6 +287,8 @@ def edititem(category_id, items_id):
 
 @app.route('/categories/<int:category_id>/<int:items_id>/delete' , methods = ['GET','POST'])
 def deleteitem(category_id,items_id):
+    if 'username'not in login_session:
+        return redirect('/login') 
     category = session.query(Category).filter_by(id = category_id).one()
     deleteditem = session.query(Items).filter_by(id = items_id).one()
     if request.method == 'POST':

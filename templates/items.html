@@ -16,14 +16,17 @@
     <a href="{{url_for('newitems' , category_id = category.id)}}">
             Add newItem </a>
         <br>
+        
+
     <a href="{{url_for('Deletecategory' , category_id = category.id)}}">
             Delete Catagory </a>
         <br>
-
+        <br>
 
         {% for item in items %} {{item.name}}
         <br> {{item.description}}
-        <br>
+        <br> 
+         <img src="{{item.img_url}}" alt="Cover art" style ="width:150px ; height=150px " class="coverurl" />
         <br>
         
         
@@ -31,11 +34,11 @@
         <a href="{{url_for('edititem', category_id = category.id ,
         items_id = item.id)}}">
             Edit  </a>
-        
+       
 
         <a href="{{url_for('deleteitem', category_id = category.id,
             items_id = item.id)}}"> Delete </a>
-        <br> {% endfor %}
+        <br> <br>{% endfor %}
 
         <a href="{{url_for('Showcategories')}}">Back to category </a>
     </div>

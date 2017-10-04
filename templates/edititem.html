@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 
@@ -12,7 +13,10 @@
         <input type="text" maxlength="250" row="3" name="description" value="{{item.description}}">
         <br>
         <br>
-
+        <label> Image_url :</label>
+        <input type="text" maxlength="250" row="3" name="img_url" placeholder="image" value="{{item.img_url}} class="coverurl" >
+        <br>
+        <br>
         <input type="submit" value="Save">
         <a href="{{url_for('Showitems' , category_id = category_id)}}">Cancel </a>
 
