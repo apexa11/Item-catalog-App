@@ -68,6 +68,34 @@ function signInCallback(authResult) {
   }); } }
 
 </script>
+
+<!-- Facebook signin -->
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId            : '1370038596455369',
+      autoLogAppEvents : true,
+      xfbml            : true,
+      version          : 'v2.10'
+    });
+    FB.AppEvents.logPageView();
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+</script>
+
+  <fb:login-button scope="public_profile,email" onlogin="sendTokenToServer();" >
+  <a href='javascript:sendTokenToServer()'>Facebook</a>
+
+ </fb:login-button>
+</button>
+
 </body>
 </div>
 </html>
