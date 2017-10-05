@@ -3,13 +3,14 @@
 <body>
 
     {% block content %}
-    <h1> {{ category.name}} 
-        <div class=" creator">
+    
+        <div class="creator">
             <img src="{{creator.picture}}">
             <figcaption>{{creator.name}}</figcaption>
-        </h1>
+    
 
         </div>
+        <h1> {{ category.name}}</h1>
 
 
     {% with messages = get_flashed_messages() %} {% if messages %}
@@ -26,7 +27,9 @@
             Add newItem </a>
         <br>
         
-
+    <a href = "{{url_for('Editcategory' , category_id = category.id )}}">
+            Edit Category </a>
+            <br>
     <a href="{{url_for('Deletecategory' , category_id = category.id)}}">
             Delete Catagory </a>
         <br>

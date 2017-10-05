@@ -61,7 +61,7 @@ class Items(Base):
             'img_url'           :self.img_url
             }
 
-engine = create_engine('sqlite:///ItemCatalog.db')
+engine = create_engine('sqlite:///ItemCatalogwithUser.db')
 
 Base.metadata.create_all(engine)
 

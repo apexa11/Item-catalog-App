@@ -1,0 +1,45 @@
+
+
+    {% block content %}
+
+        <div class="login">
+            <a href="{{url_for('showLogin')}}">Click here to login </a>
+        </div>
+
+        <div class = "pagebox">
+            <h1>
+                Item Catalog
+            </h1>
+
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+
+                <ul>
+                {% for message in messages %}
+                    <li> <strong> {{message}} </strong></li>
+                {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
+
+            <div>
+                
+
+                <br>
+                <br>
+
+                {% for category in categories %}
+                    <a href = "{{ url_for('Showitems', category_id = category.id) }}" class = "catlink">{{category.name}}</a>
+
+                    <br>
+                    <br>
+
+
+
+                {% endfor %}
+
+                <br>
+                <br>
+            </div>
+        </div>
+    {% endblock %}
