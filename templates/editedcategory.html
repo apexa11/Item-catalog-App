@@ -4,11 +4,11 @@
 <body>
     <h1> Edit {{category.name}} </h1>
 
-    <form action="{{url_for(" Editcategory ", category_id = category.id)}}" method="POST">
+    <form action="{{url_for('Editcategory', category_id = category.id)}}" method="POST">
         <label>Name :</label>
         <input type="text" size='30' name='name' value={{category.name}}>
         <input type="submit" value="Edit">
-        <a href="{{url_for (" Showcategories ", category_id = editedcategory.name)}}">Cancle </a>
+        <a href="{{url_for ("Showcategories")}}">Cancle </a>
     </form>
 
 </body>
