@@ -28,14 +28,24 @@
 
                     <br>
                     <br>
-
-
-
                 {% endfor %}
+                <br>
+                <br>
 
-                <br>
-                <br>
+            <a href="{{url_for('Showcategories')}}">
+            Show newItem </a>
+        <br>
+                
+            {% for item in items %} 
+                <a href="{{url_for('Showcategories')}}">
+            {{item.name}} {{item.description}}
+            <br> 
+                <img src="{{item.img_url}}" alt="Cover art" style ="width:150px ; height=150px " class="coverurl" /></a>
+            {% endfor %}
+
             </div>
+            </div>
+
 
            
     {% endblock %}

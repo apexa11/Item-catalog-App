@@ -1,0 +1,8 @@
+{% extends "homepage.html" %}
+{% block content %}
+	<h1>Latest items</h1>
+	{% for item in latest_items %}
+		{% for category in categories if item.category_id == category.id %}
+			<a href="{{url_for('Showitems' , category_name = category.name , item_name = item.name)}}>
+				{%if item.image_url != none %}
+				
