@@ -1,8 +1,30 @@
-{% extends "homepage.html" %}
+
+
+{% extends homepage.html %}
 {% block content %}
-	<h1>Latest items</h1>
-	{% for item in latest_items %}
-		{% for category in categories if item.category_id == category.id %}
-			<a href="{{url_for('Showitems' , category_name = category.name , item_name = item.name)}}>
-				{%if item.image_url != none %}
-				
+	<h1>Latest Items</h1>
+	<div class="latest-items">
+	{% for item in latest_item}
+		{% for category in categories if item.category_id == category.id}
+		<div class="sitem">
+			<a href="{{url_for('Showitem' , category_name=category.name , item_name = item.name)}}">
+				{% if item.img_url != none %}
+				<div style = background-image: url('{{item.img_url}}') class="item-img"></div>
+				{% else %}
+				<div class="no-img">No image </div>
+				{% endif %}
+			</a>
+			<div class="title">
+				<h2 class="title">{{item.name}}</h2>
+				<div class="sub-title">{{category.name}}</div>
+			</div>
+			<div class="action">
+				<a class="detail" href="{{url_for('Showitem', category_name = category.name ,item_name = item.name)}}"> Detail </a>
+			</div>
+		</div>
+		{% endfor %}
+	{% endfor %}
+	</div>
+
+
+ {% endblock %}

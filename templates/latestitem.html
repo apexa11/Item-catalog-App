@@ -1,0 +1,26 @@
+{% extends "homepage.html" %}
+{% block content %}
+	<h1>Latest items</h1>
+	<div>
+	{% for item in latest_items %}
+		{% for category in categories if item.category_id == category.id %}
+			<div>
+			<a href="{{url_for('Showitems' , category_name = category.name , item_name = item.name)}}">
+				{% if item.image_url != none %}
+					<div style ="background-image:url('{{item.image_url}}')" class="image"></div>
+				{% else %}
+					<div class="No-image">No image </div>
+				{% endif %}
+			</a>
+
+			<div>
+				<h2>{{item.name}}</h2>
+				<div>{{category.name}}</div>
+			</div>	
+			<div>
+				<a href="{{url_for('Showitem', category_name= category.name, item_name = item.name)}}">detail</a>
+			</div>
+	</div>
+	{% endfor %}
+	{% endfor %}
+	</div>

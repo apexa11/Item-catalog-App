@@ -287,11 +287,11 @@ def category_itemsJSON(category_id):
 @app.route('/categories')
 def Showcategories():
     categories = session.query(Category).order_by(asc(Category.name)).all()
-    latest_item = session.query(Item).order_by(desc(item.id))[0:10]
+    latest_item = session.query(Items).order_by(asc(Items.id))[0:10]
     if 'username' not in login_session:
         return render_template('publichomepage.html', categories = categories)
     else:
-        return render_template('homepage.html', categories = categories, latest_item = latest_item)
+        return render_template('latestitem.html', categories = categories, latest_item = latest_item)
 
 #show all catagories
 @app.route('/categories/new', methods = ['GET', 'POST'])
